@@ -351,8 +351,6 @@
 (bind-key "C-c f" 'ff-find-other-file)
 
 ;; move betwen windows and files easily
-(bind-key "C-," (lambda nil (interactive) (other-window -1)))
-(bind-key "C-." (lambda nil (interactive) (other-window 1)))
 (bind-key "C-<" 'previous-buffer)
 (bind-key "C->" 'next-buffer)
 (unbind-key "C-x <left>")
