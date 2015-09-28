@@ -141,7 +141,7 @@
     (add-to-list 'company-backends 'company-c-headers)))
 
 (use-package expand-region
-  :bind ("C-d" . er/expand-region))
+  :bind ("C-=" . er/expand-region))
 
 (use-package diminish
   :init
