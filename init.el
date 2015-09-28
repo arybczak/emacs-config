@@ -106,8 +106,8 @@
 (use-package buffer-move
   :bind (("<C-S-up>" . buf-move-up)
          ("<C-S-down>" . buf-move-down)
-         ("<C-S-left>" . buf-move-right)
-         ("<C-S-right>" . buf-move-left)))
+         ("<C-S-left>" . buf-move-left)
+         ("<C-S-right>" . buf-move-right)))
 
 (use-package cc-mode
   :init
