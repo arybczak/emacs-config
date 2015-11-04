@@ -96,6 +96,12 @@
  compilation-scroll-output t                               ; always scroll compilation output
  )
 
+;; disable scroll margin in term-mode
+(add-hook 'term-mode-hook
+          (lambda ()
+            (setq-local scroll-margin 0)))
+
+
 ;;;;;;;;;; PACKAGES ;;;;;;;;;;
 
 (use-package adaptive-wrap
