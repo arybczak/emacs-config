@@ -371,6 +371,9 @@
 (unbind-key "C-x <right>")
 (unbind-key "C-x o")
 
+;; do not minimize window
+(unbind-key "C-x C-z")
+
 ;;;;;;;;;; SAFE VARIABLES ;;;;;;;;;;
 
 (put 'company-clang-arguments 'safe-local-variable #'listp)
