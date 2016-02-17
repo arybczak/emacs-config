@@ -31,6 +31,7 @@
  'rainbow-delimiters
  'rainbow-identifiers
  'rainbow-mode
+ 'rust-mode
  'smart-mode-line
  'smart-tabs-mode
  'undo-tree
@@ -51,16 +52,15 @@
 
 ;;;;;;;;;; GUI SETTINGS ;;;;;;;;;;
 
-(load-theme 'monokai t)    ; theme
-(set-scroll-bar-mode 'nil) ; no scrollbar
-(tool-bar-mode -1)         ; no toolbar
-(menu-bar-mode -1)         ; no menubar
+(load-theme 'monokai t)                                     ; theme
+(set-scroll-bar-mode 'nil)                                  ; no scrollbar
+(tool-bar-mode -1)                                          ; no toolbar
+(menu-bar-mode -1)                                          ; no menubar
 
 (if window-system
     (progn
       (when (and (boundp 'my/gui-width) (boundp 'my/gui-height))
-          (set-frame-size (selected-frame) my/gui-width my/gui-height))
-      )
+          (set-frame-size (selected-frame) my/gui-width my/gui-height)))
   (menu-bar-mode -1))
 
 ;; white cursor
@@ -70,30 +70,33 @@
 
 ;;;;;;;;;; EDITOR SETTINGS ;;;;;;;;;;
 
-(defalias 'yes-or-no-p 'y-or-n-p) ; stop making me type yes/no
-(global-visual-line-mode 1)       ; soft word wrap
-(show-paren-mode 1)               ; highlight matching parens
-(global-auto-revert-mode 1)       ; auto revert files globally
+(defalias 'yes-or-no-p 'y-or-n-p)                           ; stop making me type yes/no
+(global-visual-line-mode 1)                                 ; soft word wrap
+(show-paren-mode 1)                                         ; highlight matching parens
+(global-auto-revert-mode 1)                                 ; auto revert files globally
 
 (setq-default
- tags-case-fold-search nil ; make etags search case sensitive
- require-final-newline t   ; insert newline at the end
- indent-tabs-mode nil      ; indent with spaces
- tab-width 2               ; tab width to 2
+ frame-title-format "%b - %F"                               ; display file info in window title
+ tags-case-fold-search nil                                  ; make etags search case sensitive
+ require-final-newline t                                    ; insert newline at the end
+ indent-tabs-mode nil                                       ; indent with spaces
+ tab-width 2                                                ; tab width to 2
  )
 
 (setq
- inhibit-splash-screen t                                   ; do not show splash screen
- scroll-error-top-bottom t                                 ; modern page-up/down
- column-number-mode t                                      ; enable column numbers
- backup-directory-alist `((".*" . "~/.backup"))            ; store backup files in one place
- auto-save-file-name-transforms `((".*" "~/.backup/" t))   ; store auto-save files in one place
- scroll-margin 5                                           ; scroll with moderate margin
- scroll-conservatively 101                                 ; smooth scrolling
- scroll-preserve-screen-position 'always                   ; preserve screen position on page up/down
- mouse-wheel-progressive-speed nil                         ; don't accelerate when mouse scrolling
- compilation-ask-about-save nil                            ; auto-save before compilaction
- compilation-scroll-output t                               ; always scroll compilation output
+ initial-major-mode 'text-mode                              ; set initial mode to text
+ initial-scratch-message nil                                ; make scratch buffer empty
+ inhibit-splash-screen t                                    ; do not show splash screen
+ scroll-error-top-bottom t                                  ; modern page-up/down
+ column-number-mode t                                       ; enable column numbers
+ backup-directory-alist `((".*" . "~/.backup"))             ; store backup files in one place
+ auto-save-file-name-transforms `((".*" "~/.backup/" t))    ; store auto-save files in one place
+ scroll-margin 5                                            ; scroll with moderate margin
+ scroll-conservatively 101                                  ; smooth scrolling
+ scroll-preserve-screen-position 'always                    ; preserve screen position on page up/down
+ mouse-wheel-progressive-speed nil                          ; don't accelerate when mouse scrolling
+ compilation-ask-about-save nil                             ; auto-save before compilaction
+ compilation-scroll-output t                                ; always scroll compilation output
  )
 
 ;; disable scroll margin in term-mode
@@ -290,6 +293,11 @@
           recentf-max-saved-items 10000)
     (recentf-mode 1)))
 
+(use-package rust-mode
+  :init
+  (progn
+    (setq rust-indent-offset 2)))
+
 (use-package smart-mode-line
   :init
   (progn
@@ -370,6 +378,11 @@
 (put 'projectile-project-compilation-cmd 'safe-local-variable #'stringp)
 
 ;;;;;;;;;; FUNCTIONS ;;;;;;;;;;
+
+(defun set-wide-frame ()
+  (interactive)
+  (when (boundp 'my/gui-height)
+          (set-frame-size (selected-frame) (+ 2 (* 2 85)) my/gui-height)))
 
 (defun sort-words (reverse beg end)
   "Sort words in region alphabetically, in REVERSE if negative.
