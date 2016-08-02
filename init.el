@@ -97,6 +97,7 @@
  mouse-wheel-progressive-speed nil                          ; don't accelerate when mouse scrolling
  compilation-ask-about-save nil                             ; auto-save before compilaction
  compilation-scroll-output t                                ; always scroll compilation output
+ default-fill-column 80                                     ; a bit bigger default fill column
  )
 
 ;; disable scroll margin in term-mode
@@ -171,8 +172,6 @@
 (add-to-list 'load-path haskell-mode-directory)
 (require 'haskell-mode-autoloads)
 (add-to-list 'Info-default-directory-list haskell-mode-directory)
-(setq haskell-indentation-show-indentations t)
-(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
 
 (use-package helm
   :bind (("M-x"     . helm-M-x)
