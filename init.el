@@ -57,10 +57,18 @@
 (tool-bar-mode -1)                                          ; no toolbar
 (menu-bar-mode -1)                                          ; no menubar
 
-(if window-system
-    (progn
-      (when (and (boundp 'my/gui-width) (boundp 'my/gui-height))
+(defun set-wide-frame ()
+  (interactive)
+  (when (boundp 'my/gui-height)
+          (set-frame-size (selected-frame) (+ 2 (* 2 85)) my/gui-height)))
+
+(defun set-narrow-frame ()
+  (interactive)
+  (when (and (boundp 'my/gui-width) (boundp 'my/gui-height))
           (set-frame-size (selected-frame) my/gui-width my/gui-height)))
+
+(if window-system
+    (set-narrow-frame)
   (menu-bar-mode -1))
 
 ;; white cursor
@@ -148,6 +156,9 @@
     (add-hook 'after-init-hook 'global-company-mode))
   :config
   (progn
+    (eval-after-load 'company-etags
+      '(progn
+         (add-to-list 'company-etags-modes 'haskell-mode)))
     (add-to-list 'company-backends 'company-c-headers)))
 
 (use-package expand-region
@@ -380,11 +391,6 @@
 (put 'projectile-project-compilation-cmd 'safe-local-variable #'stringp)
 
 ;;;;;;;;;; FUNCTIONS ;;;;;;;;;;
-
-(defun set-wide-frame ()
-  (interactive)
-  (when (boundp 'my/gui-height)
-          (set-frame-size (selected-frame) (+ 2 (* 2 85)) my/gui-height)))
 
 (defun sort-words (reverse beg end)
   "Sort words in region alphabetically, in REVERSE if negative.
