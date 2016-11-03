@@ -152,6 +152,7 @@
   (progn
     (setq company-clang-arguments '("-std=c++11")
           company-idle-delay 0.2
+          company-dabbrev-downcase nil
           company-minimum-prefix-length 3)
     (add-hook 'after-init-hook 'global-company-mode))
   :config
