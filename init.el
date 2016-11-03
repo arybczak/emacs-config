@@ -60,7 +60,7 @@
 (defun set-wide-frame ()
   (interactive)
   (when (boundp 'my/gui-height)
-          (set-frame-size (selected-frame) (+ 2 (* 2 85)) my/gui-height)))
+          (set-frame-size (selected-frame) (+ 2 (* 2 90)) my/gui-height)))
 
 (defun set-narrow-frame ()
   (interactive)
