@@ -160,6 +160,7 @@
     (eval-after-load 'company-etags
       '(progn
          (add-to-list 'company-etags-modes 'haskell-mode)))
+    (delete 'company-clang company-backends)
     (add-to-list 'company-backends 'company-c-headers)))
 
 (use-package expand-region
