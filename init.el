@@ -134,7 +134,7 @@
     (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
     ;; customize default indentation style
-    (c-add-style "mine" '("linux"
+    (c-add-style "mine" '("bsd"
                           (c-basic-offset . 2)
                           (tab-width . 2)
                           (indent-tabs-mode . t)
@@ -160,8 +160,13 @@
     (eval-after-load 'company-etags
       '(progn
          (add-to-list 'company-etags-modes 'haskell-mode)))
-    (delete 'company-clang company-backends)
-    (add-to-list 'company-backends 'company-c-headers)))
+    (setq company-backends '(company-nxml
+                             company-css
+                             company-cmake
+                             company-files
+                             company-c-headers
+                             (company-dabbrev-code company-capf company-etags company-keywords)
+                             company-dabbrev))))
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
@@ -338,10 +343,10 @@
     (window-number-meta-mode)))
 
 (use-package ws-butler
-  :diminish ws-butler-mode
-  :init
-  (progn
-    (ws-butler-global-mode 1)))
+ :diminish ws-butler-mode
+ :init
+ (progn
+   (ws-butler-global-mode 1)))
 
 ;;;;;;;;;; KEYBINDINGS ;;;;;;;;;;
 
@@ -404,6 +409,20 @@
   See `sort-regexp-fields'."
   (interactive "*P\nr")
   (sort-regexp-fields reverse "\\w+" "\\&" beg end))
+
+;; override ws-butler to not mess with indentation
+(defun ws-butler-clean-region (beg end)
+  "Delete trailing blanks in region BEG END."
+  (interactive "*r")
+  (ws-butler-with-save
+   (narrow-to-region beg end)
+   (goto-char (point-min))
+   (while (not (eobp))
+     (end-of-line)
+     (delete-horizontal-space)
+     (forward-line 1)))
+  ;; clean return code for hooks
+  nil)
 
 ;;;;;;;;;; CUSTOM VARIABLES ;;;;;;;;;;
 
