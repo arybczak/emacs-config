@@ -18,10 +18,12 @@
  'company-c-headers
  'diminish
  'expand-region
+ 'ggtags
  'guide-key
  ;;'haskell-mode
  'helm
  'helm-ag
+ 'helm-gtags
  'helm-projectile
  'highlight-numbers
  'highlight-symbol
@@ -122,10 +124,10 @@
     (add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode)))
 
 (use-package buffer-move
-  :bind (("<C-S-up>" . buf-move-up)
-         ("<C-S-down>" . buf-move-down)
-         ("<C-S-left>" . buf-move-left)
-         ("<C-S-right>" . buf-move-right)))
+  :bind (("<M-S-up>" . buf-move-up)
+         ("<M-S-down>" . buf-move-down)
+         ("<M-S-left>" . buf-move-left)
+         ("<M-S-right>" . buf-move-right)))
 
 (use-package cc-mode
   :init
@@ -141,7 +143,11 @@
                           (c-offsets-alist
                            (innamespace . 0))
                           ))
-    (defun my-cc-mode-setup () (c-set-style "mine"))
+    (defun my-cc-mode-setup () (progn
+                                 (c-set-style "mine")
+                                 (ggtags-mode 1)
+                                 (setq-local projectile-tags-command "gtags")
+                                 (setq-local completion-at-point-functions nil)))
     (add-hook 'c-mode-hook 'my-cc-mode-setup)
     (add-hook 'c++-mode-hook 'my-cc-mode-setup)))
 
@@ -150,10 +156,10 @@
   :bind ("<C-tab>" . company-complete)
   :init
   (progn
-    (setq company-clang-arguments '("-std=c++11")
+    (setq company-clang-arguments '("-std=c++14")
           company-idle-delay 0.2
           company-dabbrev-downcase nil
-          company-minimum-prefix-length 3)
+          company-minimum-prefix-length 2)
     (add-hook 'after-init-hook 'global-company-mode))
   :config
   (progn
@@ -165,8 +171,13 @@
                              company-cmake
                              company-files
                              company-c-headers
-                             (company-dabbrev-code company-capf company-etags company-keywords)
+                             (company-dabbrev-code company-gtags company-etags company-capf company-keywords)
                              company-dabbrev))))
+
+(use-package company-c-headers
+  :config
+  (progn
+    (add-to-list 'company-c-headers-path-system "/usr/lib/gcc/x86_64-pc-linux-gnu/5.4.0/include/g++-v5/")))
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
@@ -175,6 +186,12 @@
   :init
   (progn
     (eval-after-load "abbrev" '(diminish 'abbrev-mode))))
+
+(use-package ggtags
+  :bind (:map ggtags-mode-map
+              ("M-." . helm-gtags-dwim)
+              ("M-," . helm-gtags-pop-stack))
+  :diminish ggtags-mode)
 
 (use-package guide-key
   :diminish guide-key-mode
@@ -192,14 +209,14 @@
 (add-to-list 'Info-default-directory-list haskell-mode-directory)
 
 (use-package helm
-  :bind (("M-x"     . helm-M-x)
+  :bind (("M-."     . helm-etags-select)
+         ("M-x"     . helm-M-x)
          ("M-y"     . helm-show-kill-ring)
          ("C-x b"   . helm-mini)
          ("C-x C-f" . helm-find-files)
-         ("C-h f"   . helm-apropos)
          ("C-h g"   . helm-google-suggest)
          ("C-h SPC" . helm-all-mark-rings)
-         ("M-s o"   . helm-occur))
+         ("M-s s"   . helm-occur))
   :init
   (progn
     (require 'helm-config)
@@ -230,7 +247,10 @@
 
     (helm-mode 1)
     (helm-autoresize-mode 1)
-    (helm-projectile-on)))
+    (helm-projectile-on)
+
+    (define-key projectile-mode-map (kbd "<f8>")   #'projectile-compile-project)
+    (define-key projectile-mode-map (kbd "M-<f8>") #'kill-compilation)))
 
 (use-package highlight-numbers
   :init
@@ -366,27 +386,9 @@
 ;; bind term
 (bind-key "C-x C-m" 'term)
 
-;; bind project compilation
-(bind-key "<f8>" 'projectile-compile-project)
-(bind-key "M-<f8>" 'kill-compilation)
-
 ;; bind navigation of compilation errors
-(bind-key "<f4>" 'next-error)
-(bind-key "S-<f4>" 'previous-error)
-
-;; tags
-(bind-key "M-," 'pop-tag-mark)
-(bind-key "M-." 'helm-etags-select)
-
-;; jump to other file
-(bind-key "C-c f" 'ff-find-other-file)
-
-;; move betwen windows and files easily
-(bind-key "C-<" 'previous-buffer)
-(bind-key "C->" 'next-buffer)
-(unbind-key "C-x <left>")
-(unbind-key "C-x <right>")
-(unbind-key "C-x o")
+(bind-key "<f7>" 'next-error)
+(bind-key "M-<f7>" 'previous-error)
 
 ;; do not minimize window
 (unbind-key "C-x C-z")
@@ -410,20 +412,6 @@
   (interactive "*P\nr")
   (sort-regexp-fields reverse "\\w+" "\\&" beg end))
 
-;; override ws-butler to not mess with indentation
-(defun ws-butler-clean-region (beg end)
-  "Delete trailing blanks in region BEG END."
-  (interactive "*r")
-  (ws-butler-with-save
-   (narrow-to-region beg end)
-   (goto-char (point-min))
-   (while (not (eobp))
-     (end-of-line)
-     (delete-horizontal-space)
-     (forward-line 1)))
-  ;; clean return code for hooks
-  nil)
-
 ;;;;;;;;;; CUSTOM VARIABLES ;;;;;;;;;;
 
 (custom-set-variables
@@ -431,6 +419,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (ws-butler window-number use-package undo-tree smart-tabs-mode smart-mode-line rust-mode rainbow-mode rainbow-identifiers rainbow-delimiters package+ move-text highlight-symbol highlight-numbers helm-projectile helm-ag guide-key expand-region company-c-headers buffer-move adaptive-wrap)))
  '(safe-local-variable-values (quote ((helm-etags-match-part-only quote endtag)))))
 
 (custom-set-faces
