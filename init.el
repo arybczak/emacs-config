@@ -27,6 +27,7 @@
  'helm-projectile
  'highlight-numbers
  'highlight-symbol
+ 'monokai-theme
  'move-text
  'package+
  'projectile
@@ -53,6 +54,14 @@
     (load-file my/local-settings-file)))
 
 ;;;;;;;;;; GUI SETTINGS ;;;;;;;;;;
+
+(setq monokai-doc-face-as-comment t
+      monokai-foreground    "#F5F5F5"
+      monokai-background    "#1B1E1C"
+      monokai-comments      "#AAAA9A"
+      monokai-emphasis      "#FFFAFA"
+      monokai-highlight     "#303030"
+      monokai-highlight-alt "#2A2921")
 
 (load-theme 'monokai t)                                     ; theme
 (set-scroll-bar-mode 'nil)                                  ; no scrollbar
@@ -132,8 +141,9 @@
 (use-package cc-mode
   :init
   (progn
-    ;; open .h files as c++
+    ;; open .h and .tcc files as c++
     (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+    (add-to-list 'auto-mode-alist '("\\.tcc\\'" . c++-mode))
 
     ;; customize default indentation style
     (c-add-style "mine" '("bsd"
@@ -141,6 +151,7 @@
                           (tab-width . 2)
                           (indent-tabs-mode . t)
                           (c-offsets-alist
+                           (inextern-lang . 0)
                            (innamespace . 0))
                           ))
     (defun my-cc-mode-setup () (progn
@@ -208,6 +219,15 @@
 (require 'haskell-mode-autoloads)
 (add-to-list 'Info-default-directory-list haskell-mode-directory)
 
+(use-package haskell-mode
+  :init
+  (progn
+    (defun my-haskell-mode-setup ()
+      (progn
+        (setq-local projectile-tags-command
+                    "hasktags --ignore-close-implementation -e -x -f TAGS *")))
+    (add-hook 'haskell-mode-hook 'my-haskell-mode-setup)))
+
 (use-package helm
   :bind (("M-."     . helm-etags-select)
          ("M-x"     . helm-M-x)
@@ -220,6 +240,7 @@
   :init
   (progn
     (require 'helm-config)
+    (require 'helm)
     (global-set-key (kbd "C-c h") helm-command-prefix))
   :config
   (progn
@@ -307,6 +328,7 @@
   :init
   (progn
     (setq projectile-completion-system 'helm
+          projectile-enable-caching t
           projectile-sort-order 'recentf)
     (projectile-global-mode)))
 
@@ -395,9 +417,12 @@
 
 ;;;;;;;;;; SAFE VARIABLES ;;;;;;;;;;
 
-(put 'company-clang-arguments 'safe-local-variable #'listp)
-(put 'projectile-tags-command 'safe-local-variable #'stringp)
+(put 'company-clang-arguments            'safe-local-variable #'listp)
+(put 'projectile-tags-command            'safe-local-variable #'stringp)
 (put 'projectile-project-compilation-cmd 'safe-local-variable #'stringp)
+(put 'haskell-indentation-starter-offset 'safe-local-variable #'numberp)
+(put 'haskell-indentation-left-offset    'safe-local-variable #'numberp)
+(put 'haskell-indentation-layout-offset  'safe-local-variable #'numberp)
 
 ;;;;;;;;;; FUNCTIONS ;;;;;;;;;;
 
@@ -421,8 +446,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ws-butler window-number use-package undo-tree smart-tabs-mode smart-mode-line rust-mode rainbow-mode rainbow-identifiers rainbow-delimiters package+ move-text highlight-symbol highlight-numbers helm-projectile helm-ag guide-key expand-region company-c-headers buffer-move adaptive-wrap)))
- '(safe-local-variable-values (quote ((helm-etags-match-part-only quote endtag)))))
+    (ws-butler window-number use-package undo-tree smart-tabs-mode smart-mode-line rust-mode rainbow-mode rainbow-identifiers rainbow-delimiters package+ move-text highlight-symbol highlight-numbers helm-projectile helm-ag guide-key expand-region company-c-headers buffer-move adaptive-wrap))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
