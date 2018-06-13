@@ -100,6 +100,7 @@
  require-final-newline t                                    ; insert newline at the end
  indent-tabs-mode nil                                       ; indent with spaces
  tab-width 2                                                ; tab width to 2
+ fill-column 80                                             ; a bit bigger fill column
  )
 
 (setq
@@ -116,6 +117,7 @@
  mouse-wheel-progressive-speed nil                          ; don't accelerate when mouse scrolling
  compilation-ask-about-save nil                             ; auto-save before compilaction
  compilation-scroll-output t                                ; always scroll compilation output
+ comment-fill-column 80                                     ; a bit bigger comment fill column
  default-fill-column 80                                     ; a bit bigger default fill column
  )
 
@@ -225,7 +227,7 @@
     (defun my-haskell-mode-setup ()
       (progn
         (setq-local projectile-tags-command
-                    "hasktags --ignore-close-implementation -e -x -f TAGS *")))
+                    "hasktags -e -x -f TAGS *")))
     (add-hook 'haskell-mode-hook 'my-haskell-mode-setup)))
 
 (use-package helm
