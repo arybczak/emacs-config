@@ -332,7 +332,8 @@
     (setq projectile-completion-system 'helm
           projectile-enable-caching t
           projectile-sort-order 'recentf)
-    (projectile-global-mode)))
+    (projectile-mode)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
 
 (use-package rainbow-delimiters
   :init
