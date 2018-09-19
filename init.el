@@ -55,6 +55,8 @@
 
 ;;;;;;;;;; GUI SETTINGS ;;;;;;;;;;
 
+(set-default-font "Monospace 10")
+
 (setq monokai-doc-face-as-comment t
       monokai-foreground    "#F5F5F5"
       monokai-background    "#1B1E1C"
