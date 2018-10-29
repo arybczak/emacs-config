@@ -331,6 +331,11 @@
   :diminish projectile-mode
   :init
   (progn
+    ;; Overwrite cabal project with nix-style commands
+    (projectile-register-project-type 'haskell-cabal #'projectile-cabal-project-p
+                                      :compile "cabal new-build"
+                                      :test "cabal new-test"
+                                      :test-suffix "Spec")
     (setq projectile-completion-system 'helm
           projectile-enable-caching t
           projectile-sort-order 'recentf)
