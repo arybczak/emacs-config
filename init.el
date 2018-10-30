@@ -332,6 +332,7 @@
                                       :test-suffix "Spec")
     (setq projectile-completion-system 'helm
           projectile-enable-caching t
+          projectile-indexing-method 'hybrid
           projectile-sort-order 'recentf)
     (projectile-mode)
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
