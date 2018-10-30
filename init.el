@@ -20,7 +20,7 @@
  'expand-region
  'ggtags
  'guide-key
- ;;'haskell-mode
+ 'haskell-mode
  'helm
  'helm-ag
  'helm-gtags
@@ -216,12 +216,6 @@
           guide-key/recursive-key-sequence-flag t
           guide-key/popup-window-position 'bottom)
     (guide-key-mode 1)))
-
-;; enable haskell-mode
-(defconst haskell-mode-directory "~/.emacs.d/haskell-mode/")
-(add-to-list 'load-path haskell-mode-directory)
-(require 'haskell-mode-autoloads)
-(add-to-list 'Info-default-directory-list haskell-mode-directory)
 
 (use-package haskell-mode
   :init
@@ -456,7 +450,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ws-butler window-number use-package undo-tree smart-tabs-mode smart-mode-line rust-mode rainbow-mode rainbow-identifiers rainbow-delimiters package+ move-text highlight-symbol highlight-numbers helm-projectile helm-ag guide-key expand-region company-c-headers buffer-move adaptive-wrap))))
+    (projectile helm ws-butler window-number use-package undo-tree smart-tabs-mode smart-mode-line rust-mode rainbow-mode rainbow-identifiers rainbow-delimiters package+ move-text highlight-symbol highlight-numbers helm-projectile helm-ag guide-key expand-region company-c-headers buffer-move adaptive-wrap))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
