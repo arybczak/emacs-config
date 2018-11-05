@@ -27,6 +27,7 @@
  'helm-projectile
  'highlight-numbers
  'highlight-symbol
+ 'markdown-mode
  'monokai-theme
  'move-text
  'package+
