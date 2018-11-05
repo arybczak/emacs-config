@@ -121,6 +121,7 @@
  compilation-scroll-output t                                ; always scroll compilation output
  comment-fill-column 80                                     ; a bit bigger comment fill column
  default-fill-column 80                                     ; a bit bigger default fill column
+ js-indent-level 2
  )
 
 ;; disable scroll margin in term-mode
