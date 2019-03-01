@@ -244,7 +244,8 @@
     (global-set-key (kbd "C-c h") helm-command-prefix))
   :config
   (progn
-    (setq helm-autoresize-max-height 33
+    (setq helm-ag-insert-at-point 'symbol
+          helm-autoresize-max-height 33
           helm-autoresize-min-height 33
           helm-display-header-line nil
           helm-etags-match-part-only 'tag
