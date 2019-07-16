@@ -248,6 +248,7 @@
           helm-autoresize-max-height 33
           helm-autoresize-min-height 33
           helm-display-header-line nil
+          helm-etags-fuzzy-match t
           helm-etags-match-part-only 'tag
           helm-ff-file-name-history-use-recentf t
           helm-ff-skip-boring-files t
