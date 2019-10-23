@@ -248,7 +248,7 @@
           helm-autoresize-max-height 33
           helm-autoresize-min-height 33
           helm-display-header-line nil
-          helm-etags-fuzzy-match t
+          helm-etags-fuzzy-match nil
           helm-etags-match-part-only 'tag
           helm-ff-file-name-history-use-recentf t
           helm-ff-skip-boring-files t
@@ -455,7 +455,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (projectile helm ws-butler window-number use-package undo-tree smart-tabs-mode smart-mode-line rust-mode rainbow-mode rainbow-identifiers rainbow-delimiters package+ move-text highlight-symbol highlight-numbers helm-projectile helm-ag guide-key expand-region company-c-headers buffer-move adaptive-wrap))))
+    (adaptive-wrap bind-key buffer-move company company-c-headers diminish expand-region ggtags guide-key haskell-mode helm helm-ag helm-gtags helm-projectile highlight-numbers highlight-symbol markdown-mode monokai-theme move-text package+ projectile rainbow-delimiters rainbow-identifiers rainbow-mode rust-mode smart-mode-line smart-tabs-mode undo-tree use-package window-number ws-butler))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
