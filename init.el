@@ -123,6 +123,7 @@
  mouse-wheel-progressive-speed nil                          ; don't accelerate when mouse scrolling
  compilation-ask-about-save nil                             ; auto-save before compilaction
  compilation-scroll-output t                                ; always scroll compilation output
+ tags-revert-without-query t                                ; don't ask about TAGS reloading
  comment-fill-column 80                                     ; a bit bigger comment fill column
  default-fill-column 80                                     ; a bit bigger default fill column
  js-indent-level 2
@@ -277,30 +278,7 @@
     (define-key helm-map (kbd "M-<down>") 'next-history-element)
 
     (helm-mode 1)
-    (helm-autoresize-mode 1)
-    (helm-projectile-on)
-
-    (setq helm-ag-base-command "rg -j4 --no-heading")
-    ;; redefine helm-projectile-ag so that ripgrep works
-    (defun helm-projectile-ag (&optional options)
-      "Helm version of projectile-ag."
-      (interactive (if current-prefix-arg (list (read-string "option: " "" 'helm-ag--extra-options-history))))
-      (if (require 'helm-ag nil  'noerror)
-          (if (projectile-project-p)
-              (let* ((grep-find-ignored-files (cl-union (projectile-ignored-files-rel) grep-find-ignored-files))
-                     (grep-find-ignored-directories (cl-union (projectile-ignored-directories-rel) grep-find-ignored-directories))
-                     (ignored (mapconcat (lambda (i)
-                                           (concat "-g !" i))
-                                         (append grep-find-ignored-files grep-find-ignored-directories (cadr (projectile-parse-dirconfig-file)))
-                                         " "))
-                     (helm-ag-base-command (concat helm-ag-base-command " " ignored " " options))
-                     (current-prefix-arg nil))
-                (helm-do-ag (projectile-project-root) (car (projectile-parse-dirconfig-file))))
-            (error "You're not in a project"))
-        (error "helm-ag not available")))
-
-    (define-key projectile-mode-map (kbd "<f8>")   #'projectile-compile-project)
-    (define-key projectile-mode-map (kbd "M-<f8>") #'kill-compilation)))
+    (helm-autoresize-mode 1)))
 
 (use-package highlight-numbers
   :init
@@ -356,18 +334,43 @@
   :diminish projectile-mode
   :init
   (progn
+    (setq projectile-completion-system 'helm
+          projectile-enable-caching t
+          projectile-enable-idle-timer t
+          projectile-indexing-method 'hybrid
+          projectile-sort-order 'recentf)
+
+    (projectile-mode)
+    (helm-projectile-on)
+
     ;; Overwrite cabal project with nix-style commands
     (projectile-register-project-type 'haskell-cabal #'projectile-cabal-project-p
                                       :compile "cabal new-build"
                                       :test "cabal new-test"
                                       :test-suffix "Spec")
-    (setq projectile-completion-system 'helm
-          projectile-enable-idle-timer t
-          projectile-enable-caching t
-          projectile-indexing-method 'hybrid
-          projectile-sort-order 'recentf)
-    (projectile-mode)
-    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
+
+    (setq helm-ag-base-command "rg -j4 --no-heading")
+    ;; redefine helm-projectile-ag so that ripgrep works
+    (defun helm-projectile-ag (&optional options)
+      "Helm version of projectile-ag."
+      (interactive (if current-prefix-arg (list (read-string "option: " "" 'helm-ag--extra-options-history))))
+      (if (require 'helm-ag nil  'noerror)
+          (if (projectile-project-p)
+              (let* ((grep-find-ignored-files (cl-union (projectile-ignored-files-rel) grep-find-ignored-files))
+                     (grep-find-ignored-directories (cl-union (projectile-ignored-directories-rel) grep-find-ignored-directories))
+                     (ignored (mapconcat (lambda (i)
+                                           (concat "-g !" i))
+                                         (append grep-find-ignored-files grep-find-ignored-directories (cadr (projectile-parse-dirconfig-file)))
+                                         " "))
+                     (helm-ag-base-command (concat helm-ag-base-command " " ignored " " options))
+                     (current-prefix-arg nil))
+                (helm-do-ag (projectile-project-root) (car (projectile-parse-dirconfig-file))))
+            (error "You're not in a project"))
+        (error "helm-ag not available")))
+
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "<f8>")   #'projectile-compile-project)
+    (define-key projectile-mode-map (kbd "M-<f8>") #'kill-compilation)))
 
 (use-package rainbow-delimiters
   :init
