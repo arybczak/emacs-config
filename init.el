@@ -17,6 +17,7 @@
  'company
  'company-c-headers
  'diminish
+ 'elm-mode
  'expand-region
  'ggtags
  'guide-key
@@ -25,6 +26,7 @@
  'helm-ag
  'helm-gtags
  'helm-projectile
+ 'helm-xref
  'highlight-numbers
  'highlight-symbol
  'markdown-mode
@@ -42,6 +44,7 @@
  'use-package
  'window-number
  'ws-butler
+ 'yaml-mode
  )
 
 (eval-when-compile
@@ -130,6 +133,10 @@
           (lambda ()
             (setq-local scroll-margin 0)))
 
+;; reindent after jumping to definition
+(add-hook 'xref-after-jump-hook
+          (lambda ()
+            (progn (recenter) (xref-pulse-momentarily) (back-to-indentation))))
 
 ;;;;;;;;;; PACKAGES ;;;;;;;;;;
 
@@ -162,7 +169,7 @@
                           ))
     (defun my-cc-mode-setup () (progn
                                  (c-set-style "mine")
-                                 (ggtags-mode 1)
+                                 ;(ggtags-mode 1)
                                  (setq-local projectile-tags-command "gtags")
                                  (setq-local completion-at-point-functions nil)))
     (add-hook 'c-mode-hook 'my-cc-mode-setup)
@@ -229,7 +236,7 @@
     (add-hook 'haskell-mode-hook 'my-haskell-mode-setup)))
 
 (use-package helm
-  :bind (("M-."     . helm-etags-select)
+  :bind (;;("M-."     . helm-etags-select)
          ("M-x"     . helm-M-x)
          ("M-y"     . helm-show-kill-ring)
          ("C-x b"   . helm-mini)
@@ -241,6 +248,7 @@
   (progn
     (require 'helm-config)
     (require 'helm)
+    (require 'helm-xref)
     (global-set-key (kbd "C-c h") helm-command-prefix))
   :config
   (progn
@@ -271,6 +279,25 @@
     (helm-mode 1)
     (helm-autoresize-mode 1)
     (helm-projectile-on)
+
+    (setq helm-ag-base-command "rg -j4 --no-heading")
+    ;; redefine helm-projectile-ag so that ripgrep works
+    (defun helm-projectile-ag (&optional options)
+      "Helm version of projectile-ag."
+      (interactive (if current-prefix-arg (list (read-string "option: " "" 'helm-ag--extra-options-history))))
+      (if (require 'helm-ag nil  'noerror)
+          (if (projectile-project-p)
+              (let* ((grep-find-ignored-files (cl-union (projectile-ignored-files-rel) grep-find-ignored-files))
+                     (grep-find-ignored-directories (cl-union (projectile-ignored-directories-rel) grep-find-ignored-directories))
+                     (ignored (mapconcat (lambda (i)
+                                           (concat "-g !" i))
+                                         (append grep-find-ignored-files grep-find-ignored-directories (cadr (projectile-parse-dirconfig-file)))
+                                         " "))
+                     (helm-ag-base-command (concat helm-ag-base-command " " ignored " " options))
+                     (current-prefix-arg nil))
+                (helm-do-ag (projectile-project-root) (car (projectile-parse-dirconfig-file))))
+            (error "You're not in a project"))
+        (error "helm-ag not available")))
 
     (define-key projectile-mode-map (kbd "<f8>")   #'projectile-compile-project)
     (define-key projectile-mode-map (kbd "M-<f8>") #'kill-compilation)))
@@ -335,6 +362,7 @@
                                       :test "cabal new-test"
                                       :test-suffix "Spec")
     (setq projectile-completion-system 'helm
+          projectile-enable-idle-timer t
           projectile-enable-caching t
           projectile-indexing-method 'hybrid
           projectile-sort-order 'recentf)
@@ -455,7 +483,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (adaptive-wrap bind-key buffer-move company company-c-headers diminish expand-region ggtags guide-key haskell-mode helm helm-ag helm-gtags helm-projectile highlight-numbers highlight-symbol markdown-mode monokai-theme move-text package+ projectile rainbow-delimiters rainbow-identifiers rainbow-mode rust-mode smart-mode-line smart-tabs-mode undo-tree use-package window-number ws-butler))))
+    (adaptive-wrap bind-key buffer-move company company-c-headers diminish elm-mode expand-region ggtags guide-key haskell-mode helm helm-ag helm-gtags helm-projectile helm-xref highlight-numbers highlight-symbol markdown-mode monokai-theme move-text package+ projectile rainbow-delimiters rainbow-identifiers rainbow-mode rust-mode smart-mode-line smart-tabs-mode undo-tree use-package window-number ws-butler yaml-mode))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
