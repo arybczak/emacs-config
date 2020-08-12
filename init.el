@@ -171,7 +171,7 @@
     (defun my-cc-mode-setup () (progn
                                  (c-set-style "mine")
                                  ;(ggtags-mode 1)
-                                 (setq-local projectile-tags-command "gtags")
+                                 ;(setq-local projectile-tags-command "gtags")
                                  (setq-local completion-at-point-functions nil)))
     (add-hook 'c-mode-hook 'my-cc-mode-setup)
     (add-hook 'c++-mode-hook 'my-cc-mode-setup)))
@@ -250,7 +250,21 @@
     (require 'helm-config)
     (require 'helm)
     (require 'helm-xref)
-    (global-set-key (kbd "C-c h") helm-command-prefix))
+    (global-set-key (kbd "C-c h") helm-command-prefix)
+    ;; redefine helm-xref-goto-xref-item to recenter and move to indentation
+    (defun helm-xref-goto-xref-item (item func)
+      "Set buffer and point according to xref-item ITEM.
+
+Use FUNC to display buffer."
+      (with-slots (summary location) item
+        (let* ((marker (xref-location-marker location))
+               (buf (marker-buffer marker))
+               (offset (marker-position marker)))
+          (switch-to-buffer buf)
+          (goto-char offset)
+          (funcall func buf)
+          (recenter)
+          (back-to-indentation)))))
   :config
   (progn
     (setq helm-ag-insert-at-point 'symbol
