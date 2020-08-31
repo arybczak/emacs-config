@@ -1,12 +1,16 @@
 (package-initialize)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-
-;; fetch the list of packages available 
-(unless package-archive-contents
-  (package-refresh-contents))
+(setq package-archives
+      '(("GNU ELPA"     . "https://elpa.gnu.org/packages/")
+        ;("MELPA Stable" . "https://stable.melpa.org/packages/")
+        ("MELPA"        . "https://melpa.org/packages/"))
+      package-archive-priorities
+      '(("GNU ELPA"     . 5)
+        ;("MELPA Stable" . 10)
+        ("MELPA"        . 0)))
 
 ;; bootstrap if needed
 (unless (package-installed-p 'package+)
+  (package-refresh-contents)
   (package-install 'package+))
 
 ;; package management
@@ -59,7 +63,7 @@
 
 ;;;;;;;;;; GUI SETTINGS ;;;;;;;;;;
 
-(set-default-font "Monospace 10")
+(set-frame-font "Monospace 10")
 
 (setq monokai-doc-face-as-comment t
       monokai-foreground    "#F5F5F5"
@@ -127,6 +131,7 @@
  comment-fill-column 80                                     ; a bit bigger comment fill column
  default-fill-column 80                                     ; a bit bigger default fill column
  js-indent-level 2
+ warning-minimum-level :emergency
  )
 
 ;; disable scroll margin in term-mode
@@ -499,8 +504,7 @@ Use FUNC to display buffer."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (adaptive-wrap bind-key buffer-move company company-c-headers diminish elm-mode expand-region ggtags guide-key haskell-mode helm helm-ag helm-gtags helm-projectile helm-xref highlight-numbers highlight-symbol markdown-mode monokai-theme move-text package+ projectile rainbow-delimiters rainbow-identifiers rainbow-mode rust-mode smart-mode-line smart-tabs-mode undo-tree use-package window-number ws-butler yaml-mode))))
+   '(adaptive-wrap bind-key buffer-move company company-c-headers diminish elm-mode expand-region ggtags guide-key haskell-mode helm helm-ag helm-gtags helm-projectile helm-xref highlight-numbers highlight-symbol markdown-mode monokai-theme move-text package+ projectile rainbow-delimiters rainbow-identifiers rainbow-mode rust-mode smart-mode-line smart-tabs-mode undo-tree use-package window-number ws-butler yaml-mode)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
