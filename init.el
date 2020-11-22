@@ -355,7 +355,7 @@ Use FUNC to display buffer."
   (progn
     (setq projectile-completion-system 'helm
           projectile-enable-caching t
-          projectile-enable-idle-timer t
+          ;projectile-enable-idle-timer t
           projectile-indexing-method 'hybrid
           projectile-sort-order 'recentf)
 
@@ -477,6 +477,7 @@ Use FUNC to display buffer."
 ;;;;;;;;;; SAFE VARIABLES ;;;;;;;;;;
 
 (put 'company-clang-arguments            'safe-local-variable #'listp)
+(put 'projectile-compilation-command     'safe-local-variable #'stringp)
 (put 'projectile-tags-command            'safe-local-variable #'stringp)
 (put 'projectile-project-compilation-cmd 'safe-local-variable #'stringp)
 (put 'haskell-indentation-starter-offset 'safe-local-variable #'numberp)
