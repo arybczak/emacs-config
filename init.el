@@ -46,7 +46,7 @@
  'smart-tabs-mode
  'undo-tree
  'use-package
- 'window-number
+ 'winum
  'ws-butler
  'yaml-mode
  )
@@ -114,6 +114,7 @@
  )
 
 (setq
+ tags-add-tables nil                                        ; don't ask for keeping old TAGS
  initial-major-mode 'text-mode                              ; set initial mode to text
  initial-scratch-message nil                                ; make scratch buffer empty
  inhibit-splash-screen t                                    ; do not show splash screen
@@ -124,6 +125,7 @@
  scroll-margin 5                                            ; scroll with moderate margin
  scroll-conservatively 101                                  ; smooth scrolling
  scroll-preserve-screen-position 'always                    ; preserve screen position on page up/down
+ mouse-wheel-scroll-amount '(5)
  mouse-wheel-progressive-speed nil                          ; don't accelerate when mouse scrolling
  compilation-ask-about-save nil                             ; auto-save before compilaction
  compilation-scroll-output t                                ; always scroll compilation output
@@ -437,11 +439,23 @@ Use FUNC to display buffer."
   (progn
     (global-undo-tree-mode 1)))
 
-(use-package window-number
-  :config
+(use-package winum
+  :init
   (progn
-    (window-number-mode)
-    (window-number-meta-mode)))
+    (setq winum-keymap
+          (let ((map (make-sparse-keymap)))
+            (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
+            (define-key map (kbd "M-1") 'winum-select-window-1)
+            (define-key map (kbd "M-2") 'winum-select-window-2)
+            (define-key map (kbd "M-3") 'winum-select-window-3)
+            (define-key map (kbd "M-4") 'winum-select-window-4)
+            (define-key map (kbd "M-5") 'winum-select-window-5)
+            (define-key map (kbd "M-6") 'winum-select-window-6)
+            (define-key map (kbd "M-7") 'winum-select-window-7)
+            (define-key map (kbd "M-8") 'winum-select-window-8)
+            (define-key map (kbd "M-9") 'winum-select-window-9)
+            map))
+    (winum-mode)))
 
 (use-package ws-butler
  :diminish ws-butler-mode
@@ -505,7 +519,7 @@ Use FUNC to display buffer."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(adaptive-wrap bind-key buffer-move company company-c-headers diminish elm-mode expand-region ggtags guide-key haskell-mode helm helm-ag helm-gtags helm-projectile helm-xref highlight-numbers highlight-symbol markdown-mode monokai-theme move-text package+ projectile rainbow-delimiters rainbow-identifiers rainbow-mode rust-mode smart-mode-line smart-tabs-mode undo-tree use-package window-number ws-butler yaml-mode)))
+   '(adaptive-wrap bind-key buffer-move company company-c-headers diminish elm-mode expand-region ggtags guide-key haskell-mode helm helm-ag helm-gtags helm-projectile helm-xref highlight-numbers highlight-symbol markdown-mode monokai-theme move-text package+ projectile rainbow-delimiters rainbow-identifiers rainbow-mode rust-mode smart-mode-line smart-tabs-mode undo-tree use-package winum ws-butler yaml-mode)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
