@@ -21,6 +21,7 @@
  'company
  'company-c-headers
  'diminish
+ 'doom-modeline
  'elm-mode
  'expand-region
  'ggtags
@@ -42,7 +43,6 @@
  'rainbow-identifiers
  'rainbow-mode
  'rust-mode
- 'smart-mode-line
  'smart-tabs-mode
  'undo-tree
  'use-package
@@ -210,6 +210,16 @@
   :config
   (progn
     (add-to-list 'company-c-headers-path-system "/usr/lib/gcc/x86_64-pc-linux-gnu/5.4.0/include/g++-v5/")))
+
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode)
+  :config
+  (progn
+    (setq doom-modeline-height 20
+          doom-modeline-project-detection 'projectile
+          doom-modeline-major-mode-icon nil
+          doom-modeline-buffer-file-name-style 'relative-to-project)))
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
@@ -417,13 +427,6 @@ Use FUNC to display buffer."
   :init
   (progn
     (setq rust-indent-offset 2)))
-
-(use-package smart-mode-line
-  :init
-  (progn
-    (setq sml/theme 'respectful
-          sml/no-confirm-load-theme t)
-    (sml/setup)))
 
 (use-package smart-tabs-mode
   :init
