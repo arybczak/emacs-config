@@ -216,6 +216,15 @@
   :hook (after-init . doom-modeline-mode)
   :config
   (progn
+    ;; Define your custom doom-modeline
+    (doom-modeline-def-modeline 'mine
+      '(workspace-name window-number buffer-position modals matches buffer-info remote-host word-count parrot selection-info)
+      '(objed-state misc-info persp-name battery grip irc mu4e gnus github debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker))
+    ;; Add to `doom-modeline-mode-hook` or other hooks
+    (defun setup-custom-doom-modeline ()
+      (doom-modeline-set-modeline 'mine 'default))
+    (add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline)
+
     (setq doom-modeline-height 20
           doom-modeline-project-detection 'projectile
           doom-modeline-major-mode-icon nil
