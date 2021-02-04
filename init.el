@@ -227,7 +227,8 @@
 
     (setq doom-modeline-height 20
           doom-modeline-project-detection 'projectile
-          doom-modeline-major-mode-icon nil
+          doom-modeline-icon nil
+          doom-modeline-unicode-fallback t
           doom-modeline-buffer-file-name-style 'relative-to-project)))
 
 (use-package expand-region
@@ -294,6 +295,7 @@ Use FUNC to display buffer."
   :config
   (progn
     (setq helm-ag-insert-at-point 'symbol
+          helm-display-buffer-default-height 1
           helm-autoresize-max-height 33
           helm-autoresize-min-height 33
           helm-display-header-line nil
