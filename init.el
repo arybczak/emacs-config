@@ -20,6 +20,7 @@
  'buffer-move
  'company
  'company-c-headers
+ 'dhall-mode
  'diminish
  'doom-modeline
  'elm-mode
@@ -211,6 +212,13 @@
   :config
   (progn
     (add-to-list 'company-c-headers-path-system "/usr/lib/gcc/x86_64-pc-linux-gnu/5.4.0/include/g++-v5/")))
+
+(use-package dhall-mode
+  :ensure t
+  :mode "\\.dhall\\'"
+  :config
+  (setq dhall-use-header-line nil
+          dhall-format-at-save nil))
 
 (use-package doom-modeline
   :ensure t
