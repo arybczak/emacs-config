@@ -19,18 +19,15 @@
  'bind-key
  'buffer-move
  'company
- 'company-c-headers
  'dhall-mode
  'diminish
  'doom-modeline
  'elm-mode
  'expand-region
- 'ggtags
  'guide-key
  'haskell-mode
  'helm
  'helm-ag
- 'helm-gtags
  'helm-projectile
  'helm-xref
  'highlight-numbers
@@ -177,11 +174,7 @@
                            (inextern-lang . 0)
                            (innamespace . 0))
                           ))
-    (defun my-cc-mode-setup () (progn
-                                 (c-set-style "mine")
-                                 ;(ggtags-mode 1)
-                                 ;(setq-local projectile-tags-command "gtags")
-                                 (setq-local completion-at-point-functions nil)))
+    (defun my-cc-mode-setup () (c-set-style "mine"))
     (add-hook 'c-mode-hook 'my-cc-mode-setup)
     (add-hook 'c++-mode-hook 'my-cc-mode-setup)))
 
@@ -190,28 +183,14 @@
   :bind ("<C-tab>" . company-complete)
   :init
   (progn
-    (setq company-clang-arguments '("-std=c++14")
-          company-idle-delay 0.2
+    (setq company-idle-delay 0.2
           company-dabbrev-downcase nil
           company-minimum-prefix-length 2)
     (add-hook 'after-init-hook 'global-company-mode))
   :config
   (progn
-    (eval-after-load 'company-etags
-      '(progn
-         (add-to-list 'company-etags-modes 'haskell-mode)))
-    (setq company-backends '(company-nxml
-                             company-css
-                             company-cmake
-                             company-files
-                             company-c-headers
-                             (company-dabbrev-code company-gtags company-etags company-capf company-keywords)
-                             company-dabbrev))))
-
-(use-package company-c-headers
-  :config
-  (progn
-    (add-to-list 'company-c-headers-path-system "/usr/lib/gcc/x86_64-pc-linux-gnu/5.4.0/include/g++-v5/")))
+    (setq company-backends (delete 'company-capf company-backends))
+    ))
 
 (use-package dhall-mode
   :ensure t
@@ -247,12 +226,6 @@
   :init
   (progn
     (eval-after-load "abbrev" '(diminish 'abbrev-mode))))
-
-(use-package ggtags
-  :bind (:map ggtags-mode-map
-              ("M-." . helm-gtags-dwim)
-              ("M-," . helm-gtags-pop-stack))
-  :diminish ggtags-mode)
 
 (use-package guide-key
   :diminish guide-key-mode
