@@ -24,7 +24,6 @@
  'doom-modeline
  'elm-mode
  'expand-region
- 'guide-key
  'haskell-mode
  'helm
  'helm-ag
@@ -228,15 +227,6 @@
   :init
   (progn
     (eval-after-load "abbrev" '(diminish 'abbrev-mode))))
-
-(use-package guide-key
-  :diminish guide-key-mode
-  :init
-  (progn
-    (setq guide-key/guide-key-sequence t
-          guide-key/recursive-key-sequence-flag t
-          guide-key/popup-window-position 'bottom)
-    (guide-key-mode 1)))
 
 (use-package haskell-mode
   :init
@@ -524,18 +514,3 @@ Use FUNC to display buffer."
   (sort-regexp-fields reverse "\\w+" "\\&" beg end))
 
 ;;;;;;;;;; CUSTOM VARIABLES ;;;;;;;;;;
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(adaptive-wrap bind-key buffer-move company company-c-headers diminish elm-mode expand-region ggtags guide-key haskell-mode helm helm-ag helm-gtags helm-projectile helm-xref highlight-numbers highlight-symbol markdown-mode monokai-theme move-text package+ projectile rainbow-delimiters rainbow-identifiers rainbow-mode rust-mode smart-mode-line smart-tabs-mode undo-tree use-package winum ws-butler yaml-mode)))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
