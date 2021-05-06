@@ -36,6 +36,7 @@
  'monokai-theme
  'move-text
  'package+
+ 'popwin
  'projectile
  'rainbow-delimiters
  'rainbow-identifiers
@@ -514,3 +515,16 @@ Use FUNC to display buffer."
   (sort-regexp-fields reverse "\\w+" "\\&" beg end))
 
 ;;;;;;;;;; CUSTOM VARIABLES ;;;;;;;;;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(popwin yaml-mode ws-butler winum which-key use-package undo-tree smart-tabs-mode rust-mode rainbow-mode rainbow-identifiers rainbow-delimiters package+ move-text monokai-theme lsp-mode highlight-symbol highlight-numbers helm-xref helm-projectile helm-ag haskell-mode expand-region elm-mode doom-modeline diminish dhall-mode company buffer-move adaptive-wrap)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
