@@ -234,8 +234,7 @@
   (progn
     (defun my-haskell-mode-setup ()
       (progn
-        (setq-local projectile-tags-command
-                    "hasktags -e -x -f TAGS *")))
+        (setq-local projectile-tags-command "ghc-tags -e")))
     (add-hook 'haskell-mode-hook 'my-haskell-mode-setup)))
 
 (use-package helm
