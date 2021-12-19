@@ -187,12 +187,20 @@
   (progn
     (setq company-idle-delay 0.2
           company-dabbrev-downcase nil
-          company-minimum-prefix-length 2)
+          company-minimum-prefix-length 3)
     (add-hook 'after-init-hook 'global-company-mode))
   :config
   (progn
-    (setq company-backends (delete 'company-capf company-backends))
-    ))
+    (setq company-backends '(company-bbdb
+                             company-eclim
+                             company-semantic
+                             company-clang
+                             company-xcode
+                             company-cmake
+                             company-files
+                             (company-dabbrev-code company-gtags company-etags company-capf company-keywords)
+                             company-oddmuse
+                             company-dabbrev))))
 
 (use-package dhall-mode
   :ensure t
@@ -345,9 +353,9 @@ Use FUNC to display buffer."
     (push '("*Shell Command Output*"
             :dedicated t :position bottom :stick t :noselect nil :height 0.33)
           popwin:special-display-config)
-    (push '(" *undo-tree*"
-            :dedicated t :position bottom :stick t :noselect nil :height 0.33)
-          popwin:special-display-config)
+;    (push '(" *undo-tree*"
+;            :dedicated t :position bottom :stick t :noselect nil :height 0.33)
+;          popwin:special-display-config)
     (push '("*Warnings*"
             :dedicated t :position bottom :stick t :noselect nil :height 0.33)
           popwin:special-display-config)
@@ -520,7 +528,8 @@ Use FUNC to display buffer."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(popwin yaml-mode ws-butler winum which-key use-package undo-tree smart-tabs-mode rust-mode rainbow-mode rainbow-identifiers rainbow-delimiters package+ move-text monokai-theme lsp-mode highlight-symbol highlight-numbers helm-xref helm-projectile helm-ag haskell-mode expand-region elm-mode doom-modeline diminish dhall-mode company buffer-move adaptive-wrap)))
+   '(popwin yaml-mode ws-butler winum which-key use-package undo-tree smart-tabs-mode rust-mode rainbow-mode rainbow-identifiers rainbow-delimiters package+ move-text monokai-theme lsp-mode highlight-symbol highlight-numbers helm-xref helm-projectile helm-ag haskell-mode expand-region elm-mode doom-modeline diminish dhall-mode company buffer-move adaptive-wrap))
+ '(safe-local-variable-values '((buffer-file-coding-system . utf-8-unix))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
