@@ -36,7 +36,6 @@
  'monokai-theme
  'move-text
  'package+
- 'popwin
  'projectile
  'rainbow-delimiters
  'rainbow-identifiers
@@ -334,36 +333,6 @@ Use FUNC to display buffer."
   (progn
     (move-text-default-bindings)))
 
-(use-package popwin
-  :config
-  (progn
-    (setq popwin:special-display-config nil)
-    (push '("*Backtrace*"
-            :dedicated t :position bottom :stick t :noselect nil :height 0.33)
-          popwin:special-display-config)
-    (push '("*compilation*"
-            :dedicated t :position bottom :stick t :noselect t   :height 0.2)
-          popwin:special-display-config)
-    (push '("*Compile-Log*"
-            :dedicated t :position bottom :stick t :noselect t   :height 0.33)
-          popwin:special-display-config)
-    (push '("*Help*"
-            :dedicated t :position bottom :stick t :noselect nil :height 0.33)
-          popwin:special-display-config)
-    (push '("*Shell Command Output*"
-            :dedicated t :position bottom :stick t :noselect nil :height 0.33)
-          popwin:special-display-config)
-;    (push '(" *undo-tree*"
-;            :dedicated t :position bottom :stick t :noselect nil :height 0.33)
-;          popwin:special-display-config)
-    (push '("*Warnings*"
-            :dedicated t :position bottom :stick t :noselect nil :height 0.33)
-          popwin:special-display-config)
-    (push '("^\\*Man .*\\*$"
-            :regexp t    :position bottom :stick t :noselect nil :height 0.33)
-            popwin:special-display-config)
-    (popwin-mode 1)))
-
 (use-package projectile
   :diminish projectile-mode
   :init
@@ -528,8 +497,7 @@ Use FUNC to display buffer."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(popwin yaml-mode ws-butler winum which-key use-package undo-tree smart-tabs-mode rust-mode rainbow-mode rainbow-identifiers rainbow-delimiters package+ move-text monokai-theme lsp-mode highlight-symbol highlight-numbers helm-xref helm-projectile helm-ag haskell-mode expand-region elm-mode doom-modeline diminish dhall-mode company buffer-move adaptive-wrap))
- '(safe-local-variable-values '((buffer-file-coding-system . utf-8-unix))))
+   '(yaml-mode ws-butler winum which-key use-package undo-tree smart-tabs-mode rust-mode rainbow-mode rainbow-identifiers rainbow-delimiters package+ move-text monokai-theme lsp-mode highlight-symbol highlight-numbers helm-xref helm-projectile helm-ag haskell-mode expand-region elm-mode doom-modeline diminish dhall-mode company buffer-move adaptive-wrap)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
