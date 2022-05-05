@@ -412,6 +412,7 @@ Use FUNC to display buffer."
          ("C-S-z" . undo-tree-redo))
   :config
   (progn
+    (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
     (global-undo-tree-mode 1)))
 
 (use-package which-key
