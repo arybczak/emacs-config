@@ -352,7 +352,7 @@ Use FUNC to display buffer."
                                       :test "cabal new-test"
                                       :test-suffix "Spec")
 
-    (setq helm-ag-base-command "rg -j4 --no-heading")
+    (setq helm-ag-base-command "rg -j4 --hidden --no-heading")
     ;; redefine helm-projectile-ag so that ripgrep works
     (defun helm-projectile-ag (&optional options)
       "Helm version of projectile-ag."
@@ -412,7 +412,7 @@ Use FUNC to display buffer."
          ("C-S-z" . undo-tree-redo))
   :config
   (progn
-    (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+    (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo-tree")))
     (global-undo-tree-mode 1)))
 
 (use-package which-key
