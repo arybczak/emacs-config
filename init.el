@@ -132,6 +132,7 @@
  tags-revert-without-query t                                ; don't ask about TAGS reloading
  comment-fill-column 80                                     ; a bit bigger comment fill column
  default-fill-column 80                                     ; a bit bigger default fill column
+ large-file-warning-threshold 104857600                     ; 100MB warning threshold
  js-indent-level 2
  warning-minimum-level :emergency
  )
