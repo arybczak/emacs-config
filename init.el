@@ -220,11 +220,9 @@ Use FUNC to display buffer."
   :config
   (progn
     (setq company-backends '(company-bbdb
-                             company-eclim
                              company-semantic
-                             company-clang
-                             company-xcode
                              company-cmake
+                             company-clang
                              company-files
                              (company-dabbrev-code company-gtags company-etags company-capf company-keywords)
                              company-oddmuse
