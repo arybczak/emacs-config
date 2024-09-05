@@ -31,7 +31,6 @@
  'helm-xref
  'highlight-numbers
  'highlight-symbol
- 'lsp-mode
  'markdown-mode
  'monokai-theme
  'move-text
@@ -320,16 +319,6 @@ Use FUNC to display buffer."
   :init
   (progn
     (add-hook 'prog-mode-hook 'highlight-symbol-mode)))
-
-(use-package lsp-mode
-  :init
-  (setq lsp-keymap-prefix "C-c l"
-        lsp-headerline-breadcrumb-enable nil
-        lsp-diagnostic-package :none)
-  :hook ((c-mode . lsp)
-         (c++-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
 
 (use-package move-text
   :init
