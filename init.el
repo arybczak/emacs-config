@@ -148,6 +148,33 @@
           (lambda ()
             (progn (recenter) (xref-pulse-momentarily) (back-to-indentation))))
 
+;; Fix "Other window" action and respect xref-after-jump-hook
+(eval-after-load "helm-xref"
+  '(progn
+     (defun helm-xref-source ()
+       "Return a `helm' source for xref results."
+       (helm-build-sync-source "Helm Xref"
+         :candidates helm-xref-alist
+         :persistent-action (lambda (item)
+                              (progn
+                                (helm-xref-goto-xref-item item 'switch-to-buffer)
+                                (helm-highlight-current-line)))
+         :action '(("Switch to buffer" . (lambda (item) (helm-xref-goto-xref-item item 'switch-to-buffer)))
+                   ("Other window" . (lambda (item) (helm-xref-goto-xref-item item 'switch-to-buffer-other-window))))
+         :candidate-number-limit 9999))
+     (defun helm-xref-goto-xref-item (item func)
+       "Set buffer and point according to xref-item ITEM.
+
+Use FUNC to display buffer."
+       (let* ((summary (xref-item-summary item))
+              (location (xref-item-location item))
+              (marker (xref-location-marker location))
+              (buf (marker-buffer marker))
+              (offset (marker-position marker)))
+         (funcall func buf)
+         (goto-char offset)
+         (run-hooks 'xref-after-jump-hook)))))
+
 ;;;;;;;;;; PACKAGES ;;;;;;;;;;
 
 (use-package adaptive-wrap
@@ -260,21 +287,7 @@
     (require 'helm-config)
     (require 'helm)
     (require 'helm-xref)
-    (global-set-key (kbd "C-c h") helm-command-prefix)
-    ;; redefine helm-xref-goto-xref-item to recenter and move to indentation
-    (defun helm-xref-goto-xref-item (item func)
-      "Set buffer and point according to xref-item ITEM.
-
-Use FUNC to display buffer."
-      (with-slots (summary location) item
-        (let* ((marker (xref-location-marker location))
-               (buf (marker-buffer marker))
-               (offset (marker-position marker)))
-          (switch-to-buffer buf)
-          (goto-char offset)
-          (funcall func buf)
-          (recenter)
-          (back-to-indentation)))))
+    (global-set-key (kbd "C-c h") helm-command-prefix))
   :config
   (progn
     (setq helm-ag-insert-at-point 'symbol
