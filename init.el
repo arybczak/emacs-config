@@ -222,7 +222,7 @@ Use FUNC to display buffer."
     (setq company-backends '(company-bbdb
                              company-semantic
                              company-cmake
-                             company-clang
+                             ;company-clang
                              company-files
                              (company-dabbrev-code company-gtags company-etags company-capf company-keywords)
                              company-oddmuse
