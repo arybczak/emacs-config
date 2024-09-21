@@ -238,6 +238,12 @@ Use FUNC to display buffer."
 (use-package doom-modeline
   :ensure t
   :hook (after-init . doom-modeline-mode)
+  :init
+  (setq doom-modeline-height 20
+        doom-modeline-project-detection 'projectile
+        doom-modeline-icon nil
+        doom-modeline-unicode-fallback t
+        doom-modeline-buffer-file-name-style 'relative-to-project)
   :config
   (progn
     ;; Define your custom doom-modeline
@@ -247,13 +253,7 @@ Use FUNC to display buffer."
     ;; Add to `doom-modeline-mode-hook` or other hooks
     (defun setup-custom-doom-modeline ()
       (doom-modeline-set-modeline 'mine 'default))
-    (add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline)
-
-    (setq doom-modeline-height 20
-          doom-modeline-project-detection 'projectile
-          doom-modeline-icon nil
-          doom-modeline-unicode-fallback t
-          doom-modeline-buffer-file-name-style 'relative-to-project)))
+    (add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline)))
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
