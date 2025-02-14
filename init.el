@@ -341,7 +341,7 @@ Use FUNC to display buffer."
   :init
   (progn
     (setq projectile-completion-system 'helm
-          projectile-enable-caching t
+          projectile-enable-caching 'persistent
           ;projectile-enable-idle-timer t
           projectile-indexing-method 'hybrid
           projectile-sort-order 'recentf)
@@ -500,7 +500,7 @@ Use FUNC to display buffer."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
