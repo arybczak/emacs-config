@@ -113,6 +113,7 @@
  )
 
 (setq
+ frame-resize-pixelwise t                                   ; fix resizing on xwayland
  ispell-dictionary "english"                                ; use english dictionary
  tags-add-tables nil                                        ; don't ask for keeping old TAGS
  initial-major-mode 'text-mode                              ; set initial mode to text
