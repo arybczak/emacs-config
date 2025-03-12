@@ -112,6 +112,10 @@
  fill-column 80                                             ; a bit bigger fill column
  )
 
+; fix yank on xwayland
+(if (eq window-system 'x)
+    (setq select-enable-clipboard nil))
+
 (setq
  frame-resize-pixelwise t                                   ; fix resizing on xwayland
  ispell-dictionary "english"                                ; use english dictionary
