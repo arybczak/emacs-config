@@ -98,6 +98,7 @@
 
 ;;;;;;;;;; EDITOR SETTINGS ;;;;;;;;;;
 
+(global-set-key (kbd "S-<insert>") #'clipboard-yank)        ; make shift-insert access clipboard only
 (defalias 'yes-or-no-p 'y-or-n-p)                           ; stop making me type yes/no
 (global-visual-line-mode 1)                                 ; soft word wrap
 (show-paren-mode 1)                                         ; highlight matching parens
