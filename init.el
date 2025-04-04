@@ -98,6 +98,30 @@
 
 ;;;;;;;;;; EDITOR SETTINGS ;;;;;;;;;;
 
+(defun mouse-clipboard-yank-at-click (click arg)
+  "Insert the clipboard contents at the position clicked on.
+Also move point to one end of the text thus inserted (normally the end),
+and set mark at the beginning.
+Prefix arguments are interpreted as with \\[yank].
+If `mouse-yank-at-point' is non-nil, insert at point
+regardless of where you click."
+  (interactive "e\nP")
+  ;; Give temporary modes such as isearch a chance to turn off.
+  (run-hooks 'mouse-leave-buffer-hook)
+  (when select-active-regions
+    ;; Without this, confusing things happen upon e.g. inserting into
+    ;; the middle of an active region.
+    (deactivate-mark))
+  (or mouse-yank-at-point (mouse-set-point click))
+  (setq this-command 'yank)
+  (setq mouse-selection-click-count 0)
+  (let ((select-enable-clipboard t)
+        ;; Ensure that we defeat the DWIM logic in `gui-selection-value'
+        ;; (i.e., that gui--clipboard-selection-unchanged-p returns nil).
+        (gui--last-selected-text-clipboard nil))
+    (yank arg)))
+(global-set-key (kbd "<mouse-2>") #'mouse-clipboard-yank-at-click)
+
 (global-set-key (kbd "S-<insert>") #'clipboard-yank)        ; make shift-insert access clipboard only
 (defalias 'yes-or-no-p 'y-or-n-p)                           ; stop making me type yes/no
 (global-visual-line-mode 1)                                 ; soft word wrap
