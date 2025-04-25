@@ -137,11 +137,8 @@ regardless of where you click."
  fill-column 80                                             ; a bit bigger fill column
  )
 
-; fix yank on xwayland
-(if (eq window-system 'x)
-    (setq select-enable-clipboard nil))
-
 (setq
+ select-enable-clipboard nil                                ; clipboard fix for wayland
  frame-resize-pixelwise t                                   ; fix resizing on xwayland
  ispell-dictionary "english"                                ; use english dictionary
  tags-add-tables nil                                        ; don't ask for keeping old TAGS
